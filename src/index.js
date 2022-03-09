@@ -1,17 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from "react"
+import ReactDOM from "react-dom"
+import "./index.css"
+
+const Title = props => {
+  const colors = ["#001f3f", "#39cccc"]
+
+  const [isReversed, reverse] = useState(false)
+  const [color, setColor] = useState(0)
+
+  const styles = { color: colors[color] }
+  const onClickHandle = event => {
+    reverse(previousIsReversed => !previousIsReversed)
+    setColor(1)
+  }
+
+  return (
+    <h1 onClick={onClickHandle} style={styles}>
+      {
+        isReversed
+          ? props.text.split("").reverse().join("")
+          : props.text
+      }
+    </h1>
+  )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <div>
+    <h2>Нажмите на строки</h2>
+    <Title text="Строка #1"/>
+    <Title text="Строка #2"/>
+    <Title text="Строка #3"/>
+  </div>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
