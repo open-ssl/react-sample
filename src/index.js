@@ -1,36 +1,36 @@
-import React, { useState } from "react"
+import React, { createContext, useContext } from "react"
 import ReactDOM from "react-dom"
-import "./index.css"
 
-const Title = props => {
-  const colors = ["#001f3f", "#39cccc"]
+// создали привязку к контексту
+const contextA = createContext()
+const contextB = createContext()
+const contextC = createContext()
 
-  const [isReversed, reverse] = useState(false)
-  const [color, setColor] = useState(0)
-
-  const styles = { color: colors[color] }
-  const onClickHandle = event => {
-    reverse(previousIsReversed => !previousIsReversed)
-    setColor(1)
-  }
+// определили компонент в котором решили использовать несколько контекстов сразу
+const ChildComponent = () => {
+  const contextAValue = useContext(contextA)
+  const contextBValue = useContext(contextB)
+  const contextCValue = useContext(contextC)
 
   return (
-    <h1 onClick={onClickHandle} style={styles}>
-      {
-        isReversed
-          ? props.text.split("").reverse().join("")
-          : props.text
-      }
-    </h1>
+    <div>{contextAValue.color}-{contextBValue.color}-{contextCValue.color}</div>
+  )
+}
+
+const ParentComponent = () => {
+  // рендерим страничку передавая значения из контекстов дочернему компоненту
+  return (
+    <contextA.Provider value={{ color: "red" }}>
+      <contextB.Provider value={{ color: "green" }}>
+        <contextC.Provider value={{ color: "blue" }}>
+          <ChildComponent/>
+        </contextC.Provider>
+      </contextB.Provider>
+    </contextA.Provider>
   )
 }
 
 ReactDOM.render(
-  <div>
-    <h2>Нажмите на строки</h2>
-    <Title text="Строка #1"/>
-    <Title text="Строка #2"/>
-    <Title text="Строка #3"/>
-  </div>,
+  <ParentComponent/>,
   document.getElementById('root')
 );
