@@ -1,36 +1,24 @@
-import React, { useState } from "react"
+import React, { useRef } from "react"
 import ReactDOM from "react-dom"
 import "./index.css"
 
-const Title = props => {
-  const colors = ["#001f3f", "#39cccc"]
+const TestComponent = () => {
+  const inputRef = useRef()
 
-  const [isReversed, reverse] = useState(false)
-  const [color, setColor] = useState(0)
-
-  const styles = { color: colors[color] }
-  const onClickHandle = event => {
-    reverse(previousIsReversed => !previousIsReversed)
-    setColor(1)
+  const onClick = () => {
+    inputRef.current.focus()
+    inputRef.current.select()
   }
 
   return (
-    <h1 onClick={onClickHandle} style={styles}>
-      {
-        isReversed
-          ? props.text.split("").reverse().join("")
-          : props.text
-      }
-    </h1>
+    <div>
+      <input ref={inputRef} type="text" />
+      <button onClick={onClick}>Нажмите для выделения текста</button>
+    </div>
   )
 }
 
 ReactDOM.render(
-  <div>
-    <h2>Нажмите на строки</h2>
-    <Title text="Строка #1"/>
-    <Title text="Строка #2"/>
-    <Title text="Строка #3"/>
-  </div>,
+  <TestComponent/>,
   document.getElementById('root')
 );
