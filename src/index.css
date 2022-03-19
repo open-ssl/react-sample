@@ -16,7 +16,29 @@ body {
   flex-direction: column;
 }
 
-h1 {
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font: 15px Arial, Tahoma, sans-serif;
+}
+
+button {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  padding: 14px;
   cursor: pointer;
-  text-align: center;
+  font: 15px Arial, Tahoma, sans-serif;
+  background: #0a2638;
+  color: white;
 }

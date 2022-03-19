@@ -1,36 +1,67 @@
-import React, { useState } from "react"
+import React, { useReducer } from "react"
 import ReactDOM from "react-dom"
 import "./index.css"
 
-const Title = props => {
-  const colors = ["#001f3f", "#39cccc"]
+const initialState = {
+  login: "",
+  password: ""
+}
 
-  const [isReversed, reverse] = useState(false)
-  const [color, setColor] = useState(0)
+function reducer (state, action) {
+  switch (action.type) {
+    case "set-field-value":
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value
+      }
 
-  const styles = { color: colors[color] }
-  const onClickHandle = event => {
-    reverse(previousIsReversed => !previousIsReversed)
-    setColor(1)
+    default:
+      throw new Error("Unknown action")
+  }
+}
+
+const Form = () => {
+  const [fields, dispatch] = useReducer(reducer, initialState)
+
+  const onSubmit = event => {
+    // Предотвращаем отправку формы по умолчанию
+    event.preventDefault()
+
+    console.log(fields)
+  }
+
+  const onSetValue = event => {
+    dispatch({
+      type: "set-field-value",
+      payload: {
+        name: event.target.name,
+        value: event.target.value
+      }
+    })
   }
 
   return (
-    <h1 onClick={onClickHandle} style={styles}>
-      {
-        isReversed
-          ? props.text.split("").reverse().join("")
-          : props.text
-      }
-    </h1>
+    <form onSubmit={onSubmit} >
+      <input
+        value={fields.login}
+        onChange={onSetValue}
+        name="login"
+        type="text"
+        placeholder="Введите логин"
+      />
+      <input
+        value={fields.password}
+        onChange={onSetValue}
+        name="password"
+        type="password"
+        placeholder="Введите пароль"
+      />
+      <button>Войти</button>
+    </form>
   )
 }
 
 ReactDOM.render(
-  <div>
-    <h2>Нажмите на строки</h2>
-    <Title text="Строка #1"/>
-    <Title text="Строка #2"/>
-    <Title text="Строка #3"/>
-  </div>,
-  document.getElementById('root')
-);
+  <Form />,
+  document.getElementById("root")
+)
